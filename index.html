@@ -48,7 +48,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px s
 
 <section id="page-materials" class="page"><div class="panel">
  <div class="toolbar"><div><h3>Матеріали</h3><span class="muted">Усі складські позиції</span></div><div class="actions"><button id="addMaterial" class="btn primary">＋ Додати позицію</button></div></div>
- <div class="filters"><input id="search" placeholder="Пошук"><select id="typeFilter"><option value="">Усі типи</option><option>Кабель</option><option>Комутатор</option><option>Медіаконвертор</option><option>Оптика</option><option>Інше</option></select><select id="ownerFilter"><option value="">Усі компанії</option></select></div>
+ <div class="filters"><input id="search" placeholder="Пошук"><select id="typeFilter"><option value="">Усі типи</option><option>Кабель</option><option>Комутатор</option><option>Медіаконвертор</option><option>Оптика</option><option>Камера</option><option>Інше</option></select><select id="ownerFilter"><option value="">Усі компанії</option></select></div>
  <div class="tablewrap"><table><thead><tr><th>Назва</th><th>Тип</th><th>Власник</th><th>Кількість</th><th>Місце зберігання</th><th>Дії</th></tr></thead><tbody id="materialRows"></tbody></table></div>
 </div></section>
 
@@ -65,7 +65,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px s
 <div id="materialModal" class="modal"><div class="dialog">
  <div class="toolbar"><h3 id="materialModalTitle">Додати матеріал</h3><button class="btn soft closeModal">Закрити</button></div>
  <div class="form">
-  <div class="field"><label>Тип матеріалу</label><select id="matType"><option>Кабель</option><option>Комутатор</option><option>Медіаконвертор</option><option>Оптика</option><option>Інше</option></select></div>
+  <div class="field"><label>Тип матеріалу</label><select id="matType"><option>Кабель</option><option>Комутатор</option><option>Медіаконвертор</option><option>Оптика</option><option>Камера</option><option>Інше</option></select></div>
   <div class="field"><label>Власник</label><select id="matOwner" onchange="window.vwOwnerChange && window.vwOwnerChange(this.value)"></select><div id="customOwnerWrap" class="hidden" style="margin-top:10px"><label style="display:block;margin-bottom:6px">Назва нової компанії</label><input id="customOwner" placeholder="Наприклад: Нова компанія" autocomplete="organization"></div></div>
   <div class="field"><label>Кількість</label><input id="matQty" type="number" min="0" value="1"></div>
   <div class="field"><label>Місце зберігання</label><select id="matStorage"><option>Центральне</option><option>Умивальник</option><option>Додатковий вхід</option><option>Глухе</option><option>Окремий склад</option></select></div>
