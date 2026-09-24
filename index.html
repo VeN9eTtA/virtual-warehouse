@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Віртуальний склад</title>
+<style>
+*{box-sizing:border-box} :root{--blue:#315efb;--dark:#111a2f;--bg:#f5f7fb;--line:#dfe5ef;--text:#172033;--muted:#738099}
+body{margin:0;font:15px system-ui,-apple-system,Segoe UI,Arial;color:var(--text);background:var(--bg)}
+button,input,select,textarea{font:inherit} button{cursor:pointer}.hidden{display:none!important}
+.sidebar{position:fixed;inset:0 auto 0 0;width:255px;background:var(--dark);padding:22px 14px;color:#fff;z-index:30}
+.logo{font-size:20px;font-weight:800;padding:4px 10px 18px}.navbtn{display:block;width:100%;border:0;background:transparent;color:#c8d1e4;text-align:left;padding:13px;border-radius:10px;margin:3px 0}
+.navbtn.active,.navbtn:hover{background:#263451;color:#fff}
+.main{margin-left:255px;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+h1,h2,h3{margin-top:0}.userbox,.card,.panel{background:#fff;border:1px solid var(--line);border-radius:15px}
+.userbox{padding:9px 12px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{padding:17px}.metric{font-size:30px;font-weight:800}.muted{color:var(--muted)}
+.page{display:none}.page.active{display:block}.panel{padding:16px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:700}.primary{background:var(--blue);color:#fff}.soft{background:#edf1f8;color:#25324b}.danger{background:#ffe9e9;color:#9a2525}
+.filters{display:flex;gap:8px;margin-bottom:12px}.filters input,.filters select{padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff}
+table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:100;align-items:center;justify-content:center;padding:14px}.modal.open{display:flex}
+.dialog{width:min(720px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:18px;padding:18px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:11px}.wide{grid-column:1/-1}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.mobilehead,.overlay{display:none}
+@media(max-width:800px){
+ .main{margin-left:0;padding:78px 12px 24px}.sidebar{width:min(84vw,310px);transform:translateX(-105%);transition:.2s}.sidebar.open{transform:none}
+ .overlay.open{display:block;position:fixed;inset:0;background:#0008;z-index:29}
+ .mobilehead{display:flex;position:fixed;left:0;right:0;top:0;height:64px;z-index:25;background:#fff;border-bottom:1px solid var(--line);align-items:center;gap:9px;padding:10px 12px}
+ .mobilehead .menu{font-size:23px;background:var(--blue);color:#fff;border:0;border-radius:10px;width:45px;height:44px}.mobilehead .add{margin-left:auto}
+ .top{align-items:flex-start}.top h1{font-size:25px}.userbox{font-size:12px;max-width:48%}.cards{grid-template-columns:1fr}.toolbar{align-items:stretch;flex-direction:column}
+ .toolbar .actions,.actions{display:grid;grid-template-columns:1fr 1fr}.btn{width:100%}.filters{flex-direction:column}.filters>*{width:100%}
+ .tablewrap{overflow-x:auto}table{min-width:650px}.form{grid-template-columns:1fr}.wide{grid-column:auto}
+}
+</style>
+</head>
+<body>
+<header class="mobilehead"><button id="menuBtn" class="menu" type="button">☰</button><b>Віртуальний склад</b><button id="mobileAdd" class="btn primary add" type="button">＋ Додати</button></header>
+<div id="overlay" class="overlay"></div>
+<aside id="sidebar" class="sidebar"><div class="logo">▣ Віртуальний склад</div><div id="nav"></div></aside>
+
+<main class="main">
+<div class="top"><h1 id="pageTitle">Огляд</h1><div class="userbox"><b id="userName">Головний адміністратор</b><br><span id="roleName" class="muted">Адміністратор</span></div></div>
+
+<section id="page-overview" class="page active">
+ <div class="cards"><div class="card"><div class="muted">Позицій матеріалів</div><div id="statPositions" class="metric">0</div></div><div class="card"><div class="muted">Загальна кількість</div><div id="statQty" class="metric">0</div></div><div class="card"><div class="muted">Працівників</div><div id="statWorkers" class="metric">0</div></div></div>
+ <div class="panel" style="margin-top:12px"><h3>Швидкі дії</h3><div class="actions"><button id="overviewAdd" class="btn primary">＋ Додати матеріал</button><button data-page="materials" class="btn soft goto">Відкрити склад</button><button data-page="moves" class="btn soft goto">Переміщення</button><button data-page="workers" class="btn soft goto">Працівники</button></div></div>
+</section>
+
+<section id="page-materials" class="page"><div class="panel">
+ <div class="toolbar"><div><h3>Матеріали</h3><span class="muted">Усі складські позиції</span></div><div class="actions"><button id="addMaterial" class="btn primary">＋ Додати позицію</button></div></div>
+ <div class="filters"><input id="search" placeholder="Пошук"><select id="typeFilter"><option value="">Усі типи</option><option>Кабель</option><option>Комутатор</option><option>Інше</option></select></div>
+ <div class="tablewrap"><table><thead><tr><th>Назва</th><th>Тип</th><th>Власник</th><th>Кількість</th><th>Місце зберігання</th><th>Дії</th></tr></thead><tbody id="materialRows"></tbody></table></div>
+</div></section>
+
+<section id="page-moves" class="page"><div class="panel"><div class="toolbar"><h3>Переміщення</h3><button id="newMove" class="btn primary">＋ Нове переміщення</button></div><p class="muted">Виберіть матеріал у складі та натисніть «Перемістити».</p></div></section>
+
+<section id="page-workers" class="page"><div class="panel"><div class="toolbar"><h3>Працівники</h3><button id="addWorker" class="btn primary">＋ Додати працівника</button></div><div id="workerList" class="muted">Працівників ще немає.</div></div></section>
+
+<section id="page-trash" class="page"><div class="panel"><div class="toolbar"><h3>Корзина</h3><button id="emptyTrash" class="btn danger">Очистити назавжди</button></div><div id="trashList" class="muted">Корзина порожня.</div></div></section>
+
+<section id="page-rights" class="page"><div class="panel"><h3>Права користувачів</h3><p><b>Адміністратор:</b> повний складський доступ, керування правами та остаточне очищення корзини.</p><p><b>Просунутий користувач:</b> додавання/редагування матеріалів, переміщення та робота з працівниками. Без керування правами і без остаточного очищення корзини.</p><div class="actions"><button id="roleAdmin" class="btn primary">Тестувати як адміністратор</button><button id="roleAdvanced" class="btn soft">Тестувати як просунутий користувач</button></div></div></section>
+</main>
+
+<div id="materialModal" class="modal"><div class="dialog">
+ <div class="toolbar"><h3 id="materialModalTitle">Додати матеріал</h3><button class="btn soft closeModal">Закрити</button></div>
+ <div class="form">
+  <div class="field wide"><label>Назва</label><input id="matName"></div>
+  <div class="field"><label>Тип матеріалу</label><select id="matType"><option>Кабель</option><option>Комутатор</option><option>Інше</option></select></div>
+  <div class="field"><label>Власник</label><select id="matOwner"><option>Власні</option><option>ПК сервіс</option><option>ЕфЕйчГруп</option><option>Артлайн</option><option>СмартРішенняЮа</option><option>Інша фірма</option></select></div>
+  <div class="field"><label>Кількість</label><input id="matQty" type="number" min="0" value="1"></div>
+  <div class="field"><label>Місце зберігання</label><select id="matStorage"><option>Центральне</option><option>Умивальник</option><option>Додатковий вхід</option><option>Глухе</option><option>Окремий склад</option></select></div>
+  <div id="cableBlock" class="wide form">
+   <div class="field"><label>Тип кабелю</label><select id="cableType"><option>Вита пара</option><option>Оптика</option><option>Коаксіальний</option><option>Електричний</option><option>Сигнальний кабель</option></select></div>
+   <div class="field"><label>Виробник кабелю</label><select id="cableMaker"><option>Одеса кабель</option><option>Dialap</option><option>ZKM</option><option>Finmark</option></select></div>
+   <div id="twistedFields" class="wide form"><div class="field"><label>UTP / FTP</label><select id="pairType"><option>UTP</option><option>FTP</option></select></div><div class="field"><label>Категорія</label><select id="pairCat"><option>5</option><option>6</option><option>7</option></select></div><div class="field"><label>Колір</label><select id="pairColor"><option>Оранжевий</option><option>Чорний</option><option>Сірий</option><option>Білий</option></select></div><div class="field"><label>Тип бухти</label><select id="pairReel"><option value="305">Ціла — 305 м</option><option value="partial">Неповна</option></select></div></div>
+   <div id="opticalFields" class="wide form hidden"><div class="field"><label>Кількість волокон</label><input id="fiberCount" type="number" min="1"></div><div class="field"><label>Бухта</label><select id="opticalReel"><option value="2000">2000 м</option><option value="3000">3000 м</option><option value="partial">Неповна</option></select></div></div>
+   <div id="coaxFields" class="wide hidden"><div class="field"><label>Колір</label><select id="coaxColor"><option>Чорний</option><option>Білий</option></select></div></div>
+   <div id="electricFields" class="wide form hidden"><div class="field"><label>Кількість жил</label><input id="electricCores" type="number" min="1"></div><div class="field"><label>Січення, мм²</label><input id="crossSection" type="number" step=".01"></div></div>
+   <div id="signalFields" class="wide form hidden"><div class="field"><label>Колір</label><select id="signalColor"><option>Чорний</option><option>Білий</option></select></div><div class="field"><label>Кількість жил</label><select id="signalCores"><option>6</option><option>4</option><option>8</option></select></div></div>
+  </div>
+  <div id="switchBlock" class="wide form hidden">
+   <div class="field"><label>Виробник</label><select id="switchMaker"><option>Dahua</option><option>Hikvision</option><option>Foxgate</option></select></div>
+   <div class="field"><label>Тип</label><select id="switchPoe"><option>PoE</option><option>Без PoE</option></select></div>
+   <div id="poeFields" class="wide form"><div class="field"><label>PoE портів</label><select id="poePorts"><option>4</option><option>8</option><option>16</option><option>24</option></select></div><div class="field"><label>Всього портів</label><select id="totalPorts"><option>5</option><option>6</option><option>9</option><option>10</option><option>17</option><option>18</option><option>20</option><option>25</option><option>26</option><option>28</option></select></div></div>
+   <div id="nonPoeFields" class="wide hidden"><div class="field"><label>Кількість портів</label><select id="nonPoePorts"><option>4</option><option>6</option><option>8</option><option>16</option><option>24</option><option value="manual">Вказати вручну</option></select><input id="manualPorts" class="hidden" type="number" min="1" placeholder="Кількість портів" style="margin-top:8px"></div></div>
+  </div>
+  <div class="wide"><button id="saveMaterial" class="btn primary" style="width:100%">Зберегти</button></div>
+ </div>
+</div></div>
+
+<div id="simpleModal" class="modal"><div class="dialog"><div class="toolbar"><h3 id="simpleTitle"></h3><button class="btn soft closeSimple">Закрити</button></div><div id="simpleBody"></div></div></div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+var state={
+ role:localStorage.getItem("vw.role")||"admin",
+ materials:JSON.parse(localStorage.getItem("vw.materials")||"[]"),
+ trash:JSON.parse(localStorage.getItem("vw.trash")||"[]"),
+ workers:JSON.parse(localStorage.getItem("vw.workers")||"[]"),
+ editIndex:null
+};
+var pageNames={overview:"Огляд",materials:"Склад",moves:"Переміщення",workers:"Працівники",trash:"Корзина",rights:"Права доступу"};
+function save(){localStorage.setItem("vw.materials",JSON.stringify(state.materials));localStorage.setItem("vw.trash",JSON.stringify(state.trash));localStorage.setItem("vw.workers",JSON.stringify(state.workers))}
+function pages(){return state.role==="admin"?["overview","materials","moves","workers","trash","rights"]:["overview","materials","moves","workers","trash"]}
+function buildNav(){var n=$("nav");n.innerHTML="";pages().forEach(function(p){var b=document.createElement("button");b.type="button";b.className="navbtn";b.textContent=pageNames[p];b.setAttribute("data-page",p);b.addEventListener("click",function(){showPage(p)});n.appendChild(b)})}
+function showPage(p){if(pages().indexOf(p)<0)p="overview";document.querySelectorAll(".page").forEach(function(x){x.classList.remove("active")});$("page-"+p).classList.add("active");$("pageTitle").textContent=pageNames[p];document.querySelectorAll(".navbtn").forEach(function(x){x.classList.toggle("active",x.getAttribute("data-page")===p)});closeMenu();if(p==="materials")renderMaterials();if(p==="trash")renderTrash();if(p==="workers")renderWorkers()}
+function openMenu(){$("sidebar").classList.add("open");$("overlay").classList.add("open")}function closeMenu(){$("sidebar").classList.remove("open");$("overlay").classList.remove("open")}
+function setRole(r){state.role=r;localStorage.setItem("vw.role",r);$("userName").textContent=r==="admin"?"Головний адміністратор":"Просунутий користувач";$("roleName").textContent=r==="admin"?"Адміністратор":"Розширений складський доступ";$("emptyTrash").classList.toggle("hidden",r!=="admin");buildNav();showPage("overview")}
+function openMaterial(index){state.editIndex=typeof index==="number"?index:null;$("materialModalTitle").textContent=state.editIndex===null?"Додати матеріал":"Редагувати матеріал";if(state.editIndex===null){$("matName").value="";$("matQty").value="1";$("matType").value="Кабель";$("matOwner").value="Власні";$("matStorage").value="Центральне"}else{var m=state.materials[index];$("matName").value=m.name;$("matQty").value=m.qty;$("matType").value=m.type;$("matOwner").value=m.owner;$("matStorage").value=m.storage;if(m.cableType)$("cableType").value=m.cableType;if(m.manufacturer){$("cableMaker").value=m.manufacturer;$("switchMaker").value=m.manufacturer}}updateType();updateCable();updateSwitch();$("materialModal").classList.add("open")}
+function closeMaterial(){$("materialModal").classList.remove("open")}
+function updateType(){var t=$("matType").value;$("cableBlock").classList.toggle("hidden",t!=="Кабель");$("switchBlock").classList.toggle("hidden",t!=="Комутатор")}
+function updateCable(){["twistedFields","opticalFields","coaxFields","electricFields","signalFields"].forEach(function(id){$(id).classList.add("hidden")});var map={"Вита пара":"twistedFields","Оптика":"opticalFields","Коаксіальний":"coaxFields","Електричний":"electricFields","Сигнальний кабель":"signalFields"};$(map[$("cableType").value]).classList.remove("hidden")}
+function updateSwitch(){var poe=$("switchPoe").value==="PoE";$("poeFields").classList.toggle("hidden",!poe);$("nonPoeFields").classList.toggle("hidden",poe)}
+function syncPorts(){var target=String(Number($("poePorts").value)+2);var opts=Array.from($("totalPorts").options).map(function(o){return o.value});if(opts.indexOf(target)>=0)$("totalPorts").value=target}
+function saveMaterial(){var name=$("matName").value.trim();if(!name){alert("Вкажіть назву матеріалу");return}var m={name:name,type:$("matType").value,owner:$("matOwner").value,qty:Number($("matQty").value)||0,storage:$("matStorage").value};if(m.type==="Кабель"){m.cableType=$("cableType").value;m.manufacturer=$("cableMaker").value;if(m.cableType==="Вита пара"){m.pairType=$("pairType").value;m.category=$("pairCat").value;m.color=$("pairColor").value;m.reel=$("pairReel").value}else if(m.cableType==="Оптика"){m.fibers=$("fiberCount").value;m.reel=$("opticalReel").value}else if(m.cableType==="Коаксіальний"){m.color=$("coaxColor").value}else if(m.cableType==="Електричний"){m.cores=$("electricCores").value;m.crossSection=$("crossSection").value}else{m.color=$("signalColor").value;m.cores=$("signalCores").value}}else if(m.type==="Комутатор"){m.manufacturer=$("switchMaker").value;m.poe=$("switchPoe").value;if(m.poe==="PoE"){m.poePorts=$("poePorts").value;m.ports=$("totalPorts").value}else{m.ports=$("nonPoePorts").value==="manual"?$("manualPorts").value:$("nonPoePorts").value}}
+if(state.editIndex===null)state.materials.unshift(m);else state.materials[state.editIndex]=m;save();closeMaterial();renderMaterials();showPage("materials")}
+function renderMaterials(){var q=$("search").value.toLowerCase(),f=$("typeFilter").value;var body=$("materialRows");body.innerHTML="";state.materials.forEach(function(m,i){if((f&&m.type!==f)||(q&&m.name.toLowerCase().indexOf(q)<0))return;var tr=document.createElement("tr");tr.innerHTML="<td><b></b><div class='muted'></div></td><td></td><td></td><td></td><td></td><td><div class='actions'><button class='btn soft edit'>Редагувати</button><button class='btn soft move'>Перемістити</button><button class='btn danger del'>Видалити</button></div></td>";tr.children[0].querySelector("b").textContent=m.name;tr.children[0].querySelector(".muted").textContent=m.cableType||m.manufacturer||"";tr.children[1].textContent=m.type;tr.children[2].textContent=m.owner;tr.children[3].textContent=m.qty;tr.children[4].textContent=m.storage;tr.querySelector(".edit").onclick=function(){openMaterial(i)};tr.querySelector(".move").onclick=function(){moveMaterial(i)};tr.querySelector(".del").onclick=function(){deleteMaterial(i)};body.appendChild(tr)});if(!body.children.length){var tr=document.createElement("tr");tr.innerHTML="<td colspan='6' class='muted'>Матеріалів ще немає. Натисніть «＋ Додати позицію».</td>";body.appendChild(tr)}renderStats()}
+function deleteMaterial(i){var reason=prompt("Вкажіть причину видалення:");if(reason===null)return;if(!reason.trim()){alert("Коментар до видалення обов'язковий");return}var m=state.materials.splice(i,1)[0];state.trash.unshift({material:m,reason:reason.trim(),deletedAt:new Date().toLocaleString("uk-UA")});save();renderMaterials()}
+function moveMaterial(i){var m=state.materials[i];var locations=["Центральне","Умивальник","Додатковий вхід","Глухе","Окремий склад"];var to=prompt("Нове місце зберігання:\\n"+locations.join("\\n"),m.storage);if(to===null)return;if(locations.indexOf(to)<0){alert("Вкажіть одне з доступних місць зберігання точно як у списку.");return}m.storage=to;save();renderMaterials()}
+function renderTrash(){var d=$("trashList");d.innerHTML="";if(!state.trash.length){d.textContent="Корзина порожня.";return}state.trash.forEach(function(x,i){var div=document.createElement("div");div.className="card";div.style.marginBottom="8px";div.innerHTML="<b></b><div class='muted info'></div><div class='actions' style='margin-top:8px'><button class='btn soft restore'>Відновити</button></div>";div.querySelector("b").textContent=x.material.name;div.querySelector(".info").textContent=x.reason+" · "+x.deletedAt;div.querySelector(".restore").onclick=function(){state.materials.unshift(x.material);state.trash.splice(i,1);save();renderTrash();renderStats()};d.appendChild(div)})}
+function emptyTrash(){if(state.role!=="admin"){alert("Доступно тільки адміністратору");return}if(confirm("Остаточно очистити корзину?")){state.trash=[];save();renderTrash()}}
+function addWorker(){var n=prompt("Ім'я працівника:");if(!n||!n.trim())return;state.workers.push({name:n.trim()});save();renderWorkers();renderStats()}
+function renderWorkers(){var d=$("workerList");d.innerHTML="";if(!state.workers.length){d.textContent="Працівників ще немає.";return}state.workers.forEach(function(w){var x=document.createElement("div");x.className="card";x.style.marginBottom="8px";x.textContent=w.name;d.appendChild(x)})}
+function renderStats(){$("statPositions").textContent=state.materials.length;$("statQty").textContent=state.materials.reduce(function(a,m){return a+(Number(m.qty)||0)},0);$("statWorkers").textContent=state.workers.length}
+function simple(title,text){$("simpleTitle").textContent=title;$("simpleBody").textContent=text;$("simpleModal").classList.add("open")}
+function bind(){
+ $("menuBtn").onclick=openMenu;$("overlay").onclick=closeMenu;$("mobileAdd").onclick=function(){showPage("materials");openMaterial()};$("overviewAdd").onclick=function(){showPage("materials");openMaterial()};$("addMaterial").onclick=function(){openMaterial()};
+ document.querySelectorAll(".goto").forEach(function(b){b.onclick=function(){showPage(b.getAttribute("data-page"))}});
+ document.querySelectorAll(".closeModal").forEach(function(b){b.onclick=closeMaterial});document.querySelectorAll(".closeSimple").forEach(function(b){b.onclick=function(){$("simpleModal").classList.remove("open")}});
+ $("matType").onchange=updateType;$("cableType").onchange=updateCable;$("switchPoe").onchange=updateSwitch;$("poePorts").onchange=syncPorts;$("nonPoePorts").onchange=function(){$("manualPorts").classList.toggle("hidden",this.value!=="manual")};
+ $("saveMaterial").onclick=saveMaterial;$("search").oninput=renderMaterials;$("typeFilter").onchange=renderMaterials;$("emptyTrash").onclick=emptyTrash;$("addWorker").onclick=addWorker;
+ $("newMove").onclick=function(){simple("Нове переміщення","Для переміщення відкрийте «Склад» і натисніть «Перемістити» біля потрібного матеріалу.")};
+ $("roleAdmin").onclick=function(){setRole("admin")};$("roleAdvanced").onclick=function(){setRole("advanced")};
+}
+function init(){bind();setRole(state.role);renderMaterials();renderWorkers();renderTrash();updateType();updateCable();updateSwitch();syncPorts()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script>
+</body></html>
