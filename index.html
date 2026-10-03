@@ -2,109 +2,199 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Віртуальний склад</title>
+<title>Віртуальний склад — тест ролей</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font:14px Arial;background:#f5f7fb;color:#182230}button,input,select,textarea{font:inherit}
-.hidden{display:none!important}.login{position:fixed;inset:0;z-index:20;background:#f5f7fb;display:flex;align-items:center;justify-content:center}
-.card,.modalbox{background:#fff;border:1px solid #e4e7ec;border-radius:14px;box-shadow:0 8px 28px #10182810}.login .card{width:380px;padding:25px}
-input,select,textarea{width:100%;padding:9px;border:1px solid #d0d5dd;border-radius:8px}.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
-aside{background:#111827;color:#fff;padding:20px}.brand{font-size:20px;font-weight:bold;margin-bottom:20px}.nav button{width:100%;padding:10px;margin:3px 0;text-align:left;border:0;border-radius:8px;background:transparent;color:#dbe3ef;cursor:pointer}.nav button:hover,.nav button.active{background:#29364b}
-main{padding:24px}.top,.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.top{margin-bottom:20px}.page{display:none}.page.active{display:block}.panel{padding:18px;margin-bottom:15px}.btn{padding:9px 13px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;cursor:pointer}.primary{background:#315efb;color:#fff;border-color:#315efb}.danger{color:#b42318}.muted{color:#667085}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{font-size:27px;font-weight:bold}
-table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;border-bottom:1px solid #eaecf0;text-align:left;vertical-align:top}th{font-size:12px;color:#667085}
-.modal{display:none;position:fixed;inset:0;background:#0008;z-index:15;align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}.modalbox{width:min(760px,100%);max-height:92vh;overflow:auto;padding:22px}
-label{display:block;font-weight:bold;margin:10px 0 5px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.sub{padding:12px;border:1px solid #eaecf0;border-radius:10px;margin-top:10px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.filters{display:flex;gap:6px;flex-wrap:wrap}
-@media(max-width:760px){.app{grid-template-columns:1fr}.stats,.grid2{grid-template-columns:1fr}aside{position:relative}}
+*{box-sizing:border-box}body{margin:0;font:14px Arial,sans-serif;background:#f5f7fb;color:#182230}button,input,select,textarea{font:inherit}
+.hidden{display:none!important}.login{position:fixed;inset:0;z-index:50;background:#f5f7fb;display:flex;align-items:center;justify-content:center;padding:16px}
+.card,.modalbox{background:#fff;border:1px solid #e4e7ec;border-radius:14px;box-shadow:0 8px 28px #10182810}.login .card{width:min(440px,100%);padding:24px}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}aside{background:#111827;color:#fff;padding:20px}.brand{font-size:20px;font-weight:700;margin-bottom:20px}
+.nav button{width:100%;padding:10px;margin:3px 0;text-align:left;border:0;border-radius:8px;background:transparent;color:#dbe3ef;cursor:pointer}.nav button:hover,.nav button.active{background:#29364b}
+main{padding:24px}.top,.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.top{margin-bottom:20px}.page{display:none}.page.active{display:block}
+.panel{padding:18px;margin-bottom:15px}.btn{padding:9px 13px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;cursor:pointer}.primary{background:#315efb;color:#fff;border-color:#315efb}.danger{color:#b42318}.ok{color:#067647}.warn{color:#b54708}.muted{color:#667085}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{font-size:26px;font-weight:700}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;border-bottom:1px solid #eaecf0;text-align:left;vertical-align:top}th{font-size:12px;color:#667085}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2ff;font-size:12px}.critical{background:#fff1f0}.modal{display:none;position:fixed;inset:0;background:#0008;z-index:40;align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}
+.modalbox{width:min(800px,100%);max-height:92vh;overflow:auto;padding:22px}label{display:block;font-weight:700;margin:10px 0 5px}input,select,textarea{width:100%;padding:9px;border:1px solid #d0d5dd;border-radius:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.sub{padding:12px;border:1px solid #eaecf0;border-radius:10px;margin-top:10px}
+.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.note{padding:10px 12px;background:#f9fafb;border-radius:8px}.right{text-align:right}
+@media(max-width:850px){.app{grid-template-columns:1fr}.stats,.grid2{grid-template-columns:1fr}aside{padding:12px}}
 </style>
-</head><body>
-<div id="login" class="login"><div class="card"><h2>Віртуальний склад</h2><input id="lg" value="admin" placeholder="Логін"><br><br><input id="pw" value="admin123" type="password" placeholder="Пароль"><br><br><button class="btn primary" style="width:100%" onclick="doLogin()">Увійти</button><p id="err" style="color:#b42318"></p><small class="muted">admin / admin123<br>manager / manager123</small></div></div>
-<div class="app"><aside><div class="brand">▣ Склад</div><div class="nav" id="nav"></div></aside><main>
-<div class="top"><h1 id="title">Огляд</h1><div><span id="who" class="muted"></span> <button class="btn" onclick="location.reload()">Вийти</button></div></div>
-<section id="home" class="page active"><div class="toolbar"><div><b>Головна сторінка</b><div class="muted">Оновлена версія</div></div><button class="btn primary" onclick="openAdd()">+ Додати позицію</button></div><div class="stats" style="margin-top:15px"><div class="card panel"><div class="muted">Позицій</div><div id="stPos" class="stat">0</div></div><div class="card panel"><div class="muted">Кабелю</div><div class="stat"><span id="stM">0</span> м</div></div><div class="card panel"><div class="muted">Працівників</div><div class="stat">0</div></div></div><div class="card panel"><h3>Останні операції</h3><p class="muted">Поки порожньо.</p></div></section>
-<section id="stock" class="page"><div class="card panel"><div class="toolbar"><h3>Матеріали</h3><button class="btn primary" onclick="openAdd()">+ Додати позицію</button></div><div id="filters" class="filters" style="margin-top:10px"></div><table><thead><tr><th>Назва</th><th>Категорія</th><th>Характеристики</th><th>Кількість</th><th>Місце</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
-<section id="moves" class="page"><div class="card panel"><h3>Переміщення</h3><div id="moveRows" class="muted">Поки немає переміщень.</div></div></section>
-<section id="workers" class="page"><div class="card panel"><h3>Працівники</h3><p class="muted">Список порожній.</p></div></section>
-<section id="trashPage" class="page"><div class="card panel"><div class="toolbar"><h3>Корзина</h3><button id="clearBtn" class="btn danger" onclick="clearTrash()">Очистити корзину</button></div><div id="trashRows"></div></div></section>
-</main></div>
-
-<div id="add" class="modal"><div class="modalbox"><h3>Додати позицію</h3>
-<label>Категорія</label><select id="category"></select>
-
-<div id="generic" class="fields"><label>Назва / тип</label><input id="genericName" placeholder="Назва позиції"><label>Характеристики</label><textarea id="genericInfo" placeholder="Необов'язково"></textarea></div>
-
-<div id="optics" class="fields hidden"><label>Тип</label><select id="optType"><option>Медіаконвертор</option><option>Патчкорд оптичний</option><option>Адаптер</option><option>PON Box</option><option>ONU</option></select>
-<div id="onu" class="sub hidden"><label>Технологія</label><select id="onuTech"><option>X-PON</option><option>G-PON</option><option>E-PON</option></select><label>Стан</label><select id="onuState"><option>Новий</option><option>Б/у</option></select></div>
-<div id="pon" class="sub hidden"><label>Позиція</label><select id="ponModel"><option>FOB-002</option><option>04-16</option><option>037</option><option>FOB-AM 08</option><option>ODF</option></select><label>Стан</label><select id="ponState"><option>Новий</option><option>Б/у</option></select></div>
-<div id="optGeneric" class="sub"><label>Стан</label><select id="optState"><option>Новий</option><option>Б/у</option></select><label>Коментар</label><textarea id="optComment"></textarea></div></div>
-
-<div id="consumables" class="fields hidden"><label>Підкатегорія</label><select id="consSub"><option>Кріпильні матеріали</option><option>Роз'єми</option><option>Кріплення для опор</option></select>
-<div id="fasteners" class="sub"><label>Матеріал</label><select id="fastType"><option>Самонарізи</option><option>Дюбелі</option><option>Кабельні площадки</option><option>Дюбель Молі пластиковий</option><option>Молі металеві</option><option>Анкер по бетону</option><option>Стяжки</option><option>Ізолента</option></select>
-<div id="ties" class="sub hidden"><div class="grid2"><div><label>Ширина, мм</label><select id="tieW"><option>3.5</option><option>2.5</option><option>3</option><option>4</option><option>4.2</option><option>4.5</option></select></div><div><label>Довжина, мм</label><select id="tieL"><option>200</option><option>50</option><option>100</option><option>150</option><option>250</option><option>300</option></select></div></div><label>Колір</label><select id="tieColor"><option>Чорний</option><option>Білий</option></select><label>Кількість</label><select id="tieQtyType"><option value="100">Упаковка — 100 шт.</option><option value="x">Довільна кількість</option></select><input id="tieQty" class="hidden" type="number" min="1" placeholder="Кількість, шт."></div>
-<div id="tape" class="sub hidden"><label>Колір</label><select id="tapeColor"><option>Чорний</option><option>Білий</option><option>Червоний</option><option>Зелений</option><option>Синій</option><option>Жовтий</option><option>Зелено-жовтий</option></select><label class="check"><input id="tapeGood" type="checkbox" checked> Хороша</label></div>
-<div id="fastGeneric"><p class="muted">Кількість задається нижче.</p></div></div>
-
-<div id="connectors" class="sub hidden"><label>Роз'єм</label><select id="connType"><option>RJ-45</option><option>Роз'єм живлення DC</option><option>BNC</option><option>Балун</option></select>
-<div id="rj45" class="sub"><label>Категорія</label><select id="rjCat"><option>5</option><option>6</option><option>7</option></select><label class="check"><input id="rjShield" type="checkbox"> Екранований</label><label>Кількість</label><select id="rjQtyType"><option value="100">Пачка — 100 шт.</option><option value="x">Довільна кількість</option></select><input id="rjQty" class="hidden" type="number" min="1" placeholder="Кількість, шт."></div>
-<div id="dc" class="sub hidden"><label>Тип</label><select id="dcSex"><option>Папа</option><option>Мама</option></select><p class="muted">Кількість у штуках задається нижче.</p></div>
-<div id="bnc" class="sub hidden"><p class="muted">Кількість у штуках задається нижче.</p></div>
-<div id="balun" class="sub hidden"><label>Облік</label><select id="balunUnit"><option value="pair">Пара</option><option value="piece">Поштучно</option></select><label class="check"><input id="balunBolt" type="checkbox" checked> Під болтик</label><label>Стан</label><select id="balunState"><option>Новий</option><option>Б/у</option></select></div></div>
-
-<div id="pole" class="sub hidden"><label>Матеріал</label><select id="poleType"><option>Бандажна стрічка</option><option>Стрепи для бандажної стрічки</option><option>Гак під бандажну стрічку</option></select>
-<div id="band" class="sub"><label>Кількість</label><select id="bandQtyType"><option value="50">Бухта — 50 м</option><option value="x">Довільна кількість метрів</option></select><input id="bandQty" class="hidden" type="number" min="1" placeholder="Метрів"></div>
-<div id="straps" class="sub hidden"><label>Кількість</label><select id="strapQtyType"><option value="100">Упаковка — 100 шт.</option><option value="x">Довільна кількість</option></select><input id="strapQty" class="hidden" type="number" min="1" placeholder="Кількість, шт."></div>
-<div id="hook" class="sub hidden"><label>Розмір</label><select id="hookSize"><option>Малий</option><option>Великий</option></select><label>Стан</label><select id="hookState"><option>Новий</option><option>Б/у</option></select><p class="muted">Кількість у штуках задається нижче.</p></div></div></div>
-
-<div id="recorder" class="fields hidden"><label>Виробник</label><select id="recMaker"></select><div id="recMakerNewW" class="hidden"><label>Новий виробник</label><input id="recMakerNew"></div><label>Модель (необов'язково)</label><input id="recModel"><label>Тип реєстратора</label><select id="recType"><option>IP</option><option>Аналоговий</option></select>
-<div id="recIP"><label>Кількість каналів</label><select id="recChannels"><option>8</option><option>4</option><option>16</option><option>24</option><option>32</option><option>64</option></select><label class="check"><input id="recPoe" type="checkbox"> PoE-виходи</label><div id="recPoeCountW" class="hidden"><label>Кількість PoE-виходів</label><select id="recPoeCount"><option>8</option><option>4</option><option>16</option></select></div></div>
-<div id="recAnalog" class="hidden"><label>Кількість виходів / каналів</label><select id="recAnalogChannels"><option>8</option><option>4</option><option>16</option><option>24</option></select></div>
-<label>Кількість слотів під HDD</label><select id="recHdd"><option>2</option><option>1</option><option>4</option></select><label>Стан</label><select id="recState"><option>Новий</option><option>Б/у</option></select></div>
-
-<div class="sub" style="margin-top:16px"><label>Кількість</label><input id="qty" type="number" min="1" value="1"></div>
-<div class="sub"><label>Місце зберігання</label><select id="room"></select></div>
-<div class="actions"><button class="btn" onclick="add.classList.remove('show')">Скасувати</button><button class="btn primary" onclick="saveItem()">Додати</button></div>
+</head>
+<body>
+<div id="login" class="login"><div class="card">
+<h2>Віртуальний склад</h2><p class="muted">Тест ролей, залишків працівників і заявок</p>
+<label>Логін</label><input id="lg" value="manager"><label>Пароль</label><input id="pw" value="manager123" type="password">
+<button class="btn primary" style="width:100%;margin-top:16px" onclick="doLogin()">Увійти</button><p id="err" class="danger"></p>
+<div class="note"><b>Тестові входи</b><br>admin / admin123<br>manager / manager123<br>worker1 / worker123<br>worker2 / worker123</div>
 </div></div>
 
-<div id="detail" class="modal"><div class="modalbox"><div class="toolbar"><h3 id="detailTitle"></h3><button class="btn" onclick="detail.classList.remove('show')">Закрити</button></div><div id="detailInfo"></div><h4>Перемістити / розділити</h4><div class="grid2"><div><label>З</label><select id="fromRoom"></select></div><div><label>В</label><select id="toRoom"></select></div></div><label>Кількість</label><input id="moveQty" type="number" min="1"><button class="btn primary" style="margin-top:10px" onclick="moveItem()">Перемістити</button><hr><button class="btn danger" onclick="deleteItem()">Видалити в корзину</button></div></div>
+<div class="app"><aside><div class="brand">▣ Віртуальний склад</div><div id="nav" class="nav"></div></aside><main>
+<div class="top"><h1 id="title">Огляд</h1><div><span id="who" class="muted"></span> <button class="btn" onclick="logout()">Вийти</button></div></div>
+
+<section id="home" class="page active">
+<div class="stats">
+<div class="card panel"><div class="muted">Позицій на складі</div><div id="sStock" class="stat">0</div></div>
+<div class="card panel"><div class="muted">Критичних</div><div id="sCritical" class="stat">0</div></div>
+<div class="card panel"><div class="muted">Нових заявок</div><div id="sOrders" class="stat">0</div></div>
+<div class="card panel"><div class="muted">Працівників</div><div id="sWorkers" class="stat">0</div></div>
+</div>
+<div class="card panel"><div class="toolbar"><div><h3>Критичні залишки</h3><div class="muted">Нульові позиції, яких ніколи не було, не показуються.</div></div><select id="criticalOwner" style="width:220px" onchange="renderCritical()"></select></div>
+<table><thead><tr><th>✓</th><th>Позиція</th><th>Власність</th><th>Залишок</th><th>Критичний</th><th>До замовлення</th><th></th></tr></thead><tbody id="criticalRows"></tbody></table>
+<button class="btn primary" style="margin-top:12px" onclick="makePurchase()">Сформувати лист закупки / замовлення</button>
+</div></section>
+
+<section id="stock" class="page"><div class="card panel"><div class="toolbar"><h3>Загальний склад</h3><button class="btn primary" onclick="openAddStock()">+ Додати / прихід</button></div>
+<table><thead><tr><th>Позиція</th><th>Категорія</th><th>Власність</th><th>Фірма</th><th>Кількість</th><th>Місце</th></tr></thead><tbody id="stockRows"></tbody></table></div></section>
+
+<section id="mycar" class="page"><div class="card panel"><div class="toolbar"><div><h3 id="carTitle">Моя машина / залишки</h3><div class="muted">Матеріали, обладнання та інструмент, закріплені за працівником.</div></div><button class="btn primary" onclick="openRequest()">+ Заявка на поповнення</button></div>
+<table><thead><tr><th>Позиція</th><th>Тип</th><th>Власність</th><th>Кількість</th><th>Мінімум</th><th>Стан</th></tr></thead><tbody id="carRows"></tbody></table></div></section>
+
+<section id="workers" class="page"><div class="card panel"><div class="toolbar"><h3>Працівники</h3><button class="btn primary" onclick="openWorker()">+ Додати працівника</button></div>
+<table><thead><tr><th>Працівник</th><th>Логін</th><th>Залишків</th><th>Активні об'єкти</th><th></th></tr></thead><tbody id="workerRows"></tbody></table></div></section>
+
+<section id="orders" class="page"><div class="card panel"><div class="toolbar"><div><h3>Замовлення / заявки</h3><div class="muted">Заявки працівників на переміщення з основного складу.</div></div><span id="orderBadge" class="badge"></span></div>
+<div id="orderRows"></div></div></section>
+
+<section id="objects" class="page"><div class="card panel"><div class="toolbar"><h3>Об'єкти / роботи</h3><button class="btn primary" onclick="openObject()">+ Додати об'єкт</button></div>
+<div id="objectRows"></div></div></section>
+
+<section id="tools" class="page"><div class="card panel"><h3>Інструмент</h3><table><thead><tr><th>Інструмент</th><th>Кількість</th><th>Розташування</th></tr></thead><tbody id="toolRows"></tbody></table></div></section>
+</main></div>
+
+<div id="requestModal" class="modal"><div class="modalbox"><h3>Нова заявка на переміщення</h3>
+<div class="grid2"><div><label>Звідки</label><select id="reqSource"><option>Основний склад</option></select></div><div><label>Фірма / власність</label><select id="reqOwner"></select></div></div>
+<label>Об'єкт</label><select id="reqObject"></select><div id="reqItems"></div>
+<button class="btn" style="margin-top:10px" onclick="addReqLine()">+ Додати позицію</button>
+<div class="actions"><button class="btn" onclick="requestModal.classList.remove('show')">Скасувати</button><button class="btn primary" onclick="saveRequest()">Надіслати заявку</button></div></div></div>
+
+<div id="workerModal" class="modal"><div class="modalbox"><h3>Додати працівника</h3><label>Ім'я</label><input id="newWorkerName"><div class="grid2"><div><label>Логін</label><input id="newWorkerLogin"></div><div><label>Пароль</label><input id="newWorkerPass" value="worker123"></div></div>
+<div class="actions"><button class="btn" onclick="workerModal.classList.remove('show')">Скасувати</button><button class="btn primary" onclick="saveWorker()">Додати</button></div></div></div>
+
+<div id="stockModal" class="modal"><div class="modalbox"><h3>Прихід / додати позицію</h3>
+<div class="grid2"><div><label>Назва</label><input id="stName"></div><div><label>Категорія</label><select id="stCat"><option>Кабель</option><option>Оптика</option><option>Камери</option><option>Розхідні матеріали</option><option>Кабель-канал</option><option>Гофротруба</option><option>Інструмент</option></select></div></div>
+<div class="grid2"><div><label>Власність обладнання</label><select id="stOwner"></select></div><div><label>Фірма / напрямок</label><select id="stFirm"></select></div></div>
+<div class="grid2"><div><label>Кількість</label><input id="stQty" type="number" value="1" min="0"></div><div><label>Одиниця</label><select id="stUnit"><option>шт</option><option>м</option><option>уп.</option><option>бухта</option></select></div></div>
+<label>Місце</label><select id="stPlace"><option>Центральне</option><option>Умивальник</option><option>Додатковий вхід</option><option>Глухе</option><option>Окремий склад</option></select>
+<div class="actions"><button class="btn" onclick="stockModal.classList.remove('show')">Скасувати</button><button class="btn primary" onclick="saveStock()">Оприбуткувати</button></div></div></div>
+
+<div id="objectModal" class="modal"><div class="modalbox"><h3>Новий об'єкт / робота</h3><label>Назва об'єкта</label><input id="objName"><label>Фірма</label><select id="objFirm"></select><label>Короткий опис робіт</label><textarea id="objDesc"></textarea>
+<label>Працівники</label><div id="objWorkers"></div><div class="actions"><button class="btn" onclick="objectModal.classList.remove('show')">Скасувати</button><button class="btn primary" onclick="saveObject()">Створити</button></div></div></div>
 
 <script>
-const C=['Кабель','Оптика','Комутатори','Камери','Патчкорд мідний','Ethernet розетка','Розхідні матеріали','Блок живлення','Накопичувачі','Реєстратор'];
-const R=['Центральне','Умивальник','Додатковий вхід','Глухе','Окремий склад'];
-let data=JSON.parse(localStorage.getItem('warehouse_checkpoint4')||'[]'),bin=JSON.parse(localStorage.getItem('warehouse_bin4')||'[]'),mv=JSON.parse(localStorage.getItem('warehouse_moves4')||'[]'),selected=null,role='',filter='';
-let recMakers=JSON.parse(localStorage.getItem('warehouse_rec_makers')||'null')||['Hikvision','Dahua','Uniview','Tiandy','Axis','Hanwha Vision','Imou'];
-const $=id=>document.getElementById(id);
-category.innerHTML=C.map(x=>`<option>${x}</option>`).join('');room.innerHTML=R.map(x=>`<option>${x}</option>`).join('');
-function doLogin(){if(lg.value==='admin'&&pw.value==='admin123'){role='admin';who.textContent='Головний адміністратор'}else if(lg.value==='manager'&&pw.value==='manager123'){role='full';who.textContent='Повний доступ'}else{return err.textContent='Невірний логін або пароль'}login.classList.add('hidden');buildNav();render()}
-function buildNav(){nav.innerHTML='';[['home','Огляд'],['stock','Склад'],['moves','Переміщення'],['workers','Працівники'],['trashPage','Корзина']].forEach(([id,n],i)=>{let b=document.createElement('button');b.textContent=n;b.className=i?'':'active';b.onclick=()=>{document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');title.textContent=n;render()};nav.appendChild(b)});clearBtn.style.display=role==='admin'?'inline-block':'none'}
-function openAdd(){add.classList.add('show');changeCat()}
-category.onchange=changeCat;
-function changeCat(){document.querySelectorAll('.fields').forEach(x=>x.classList.add('hidden'));let map={'Оптика':optics,'Розхідні матеріали':consumables,'Реєстратор':recorder};(map[category.value]||generic).classList.remove('hidden');if(category.value!=='Оптика'&&category.value!=='Розхідні матеріали'&&category.value!=='Реєстратор')genericName.value=category.value;optUI();consUI();recUI()}
-optType.onchange=optUI;
-function optUI(){[onu,pon,optGeneric].forEach(x=>x.classList.add('hidden'));if(optType.value==='ONU')onu.classList.remove('hidden');else if(optType.value==='PON Box')pon.classList.remove('hidden');else optGeneric.classList.remove('hidden')}
-consSub.onchange=consUI;fastType.onchange=fastUI;connType.onchange=connUI;poleType.onchange=poleUI;
-function consUI(){[fasteners,connectors,pole].forEach(x=>x.classList.add('hidden'));if(consSub.value==='Кріпильні матеріали'){fasteners.classList.remove('hidden');fastUI()}else if(consSub.value==="Роз'єми"){connectors.classList.remove('hidden');connUI()}else{pole.classList.remove('hidden');poleUI()}}
-function fastUI(){ties.classList.toggle('hidden',fastType.value!=='Стяжки');tape.classList.toggle('hidden',fastType.value!=='Ізолента')}
-function connUI(){[rj45,dc,bnc,balun].forEach(x=>x.classList.add('hidden'));({'RJ-45':rj45,"Роз'єм живлення DC":dc,'BNC':bnc,'Балун':balun})[connType.value].classList.remove('hidden')}
-function poleUI(){[band,straps,hook].forEach(x=>x.classList.add('hidden'));({'Бандажна стрічка':band,'Стрепи для бандажної стрічки':straps,'Гак під бандажну стрічку':hook})[poleType.value].classList.remove('hidden')}
-tieQtyType.onchange=()=>tieQty.classList.toggle('hidden',tieQtyType.value!=='x');rjQtyType.onchange=()=>rjQty.classList.toggle('hidden',rjQtyType.value!=='x');bandQtyType.onchange=()=>bandQty.classList.toggle('hidden',bandQtyType.value!=='x');strapQtyType.onchange=()=>strapQty.classList.toggle('hidden',strapQtyType.value!=='x');
-balunUnit.onchange=()=>{balunState.value=balunUnit.value==='pair'?'Новий':'Б/у'};
-function fillRecMakers(){recMaker.innerHTML=recMakers.map(x=>`<option>${x}</option>`).join('')+'<option value="new">Інший</option>'}fillRecMakers();recMaker.onchange=()=>recMakerNewW.classList.toggle('hidden',recMaker.value!=='new');
-recType.onchange=recUI;recPoe.onchange=recUI;
-function recUI(){let ip=recType.value==='IP';recIP.classList.toggle('hidden',!ip);recAnalog.classList.toggle('hidden',ip);recPoeCountW.classList.toggle('hidden',!ip||!recPoe.checked)}
-function recorderMaker(){if(recMaker.value!=='new')return recMaker.value;let v=recMakerNew.value.trim()||'Інший';if(v!=='Інший'&&!recMakers.includes(v)){recMakers.push(v);localStorage.setItem('warehouse_rec_makers',JSON.stringify(recMakers));fillRecMakers()}return v}
-function saveItem(){let q=+qty.value||1,m={id:Date.now(),category:category.value,name:category.value,qty:q,room:room.value,dist:{[room.value]:q},info:''};
-if(m.category==='Оптика'){m.type=optType.value;m.name=m.type;if(m.type==='ONU'){m.info=`${onuTech.value} · ${onuState.value}`}else if(m.type==='PON Box'){m.name=ponModel.value;m.info=ponState.value}else{m.info=`${optState.value}${optComment.value?' · '+optComment.value:''}`}}
-else if(m.category==='Розхідні матеріали'){m.sub=consSub.value;if(m.sub==='Кріпильні матеріали'){m.type=fastType.value;m.name=m.type;if(m.type==='Стяжки'){m.name=`Стяжки ${tieW.value}×${tieL.value} мм, ${tieColor.value.toLowerCase()}`;m.info=`${tieColor.value} · ${tieW.value}×${tieL.value} мм`;m.qty=tieQtyType.value==='x'?(+tieQty.value||1):100;m.dist={[room.value]:m.qty}}else if(m.type==='Ізолента'){m.info=`${tapeColor.value} · ${tapeGood.checked?'Хороша':'Не хороша'}`}}
-else if(m.sub==="Роз'єми"){m.type=connType.value;m.name=m.type;if(m.type==='RJ-45'){m.info=`Кат. ${rjCat.value}${rjShield.checked?' · Екранований':''}`;m.qty=rjQtyType.value==='x'?(+rjQty.value||1):100;m.dist={[room.value]:m.qty}}else if(m.type==="Роз'єм живлення DC"){m.info=dcSex.value}else if(m.type==='BNC'){m.info='BNC'}else{m.info=`${balunUnit.value==='pair'?'Пара':'Поштучно'} · ${balunState.value}${balunBolt.checked?' · Під болтик':''}`}}
-else{m.type=poleType.value;m.name=m.type;if(m.type==='Бандажна стрічка'){m.qty=bandQtyType.value==='x'?(+bandQty.value||1):50;m.dist={[room.value]:m.qty};m.unit='м';m.info='Кріплення для опор'}else if(m.type==='Стрепи для бандажної стрічки'){m.qty=strapQtyType.value==='x'?(+strapQty.value||1):100;m.dist={[room.value]:m.qty};m.info='Кріплення для опор'}else{m.info=`${hookSize.value} · ${hookState.value}`}}}
-else if(m.category==='Реєстратор'){m.type=recType.value;let maker=recorderMaker(),channels=m.type==='IP'?recChannels.value:recAnalogChannels.value;m.name=`Реєстратор ${maker}${recModel.value?' '+recModel.value:''}`;m.info=`${m.type} · ${channels} каналів · HDD слотів: ${recHdd.value} · ${recState.value}`;if(m.type==='IP'&&recPoe.checked)m.info+=` · PoE: ${recPoeCount.value}`}
-else{m.name=genericName.value.trim()||m.category;m.info=genericInfo.value.trim()}
-data.push(m);persist();add.classList.remove('show');render()}
-function info(m){return m.info||m.type||''}
-function qtyText(m){return `${m.qty}${m.unit?' '+m.unit:''}`}
-function render(){stPos.textContent=data.length;stM.textContent=data.filter(x=>x.category==='Кабель').reduce((s,x)=>s+(x.meters||0),0);filters.innerHTML='<button class="btn" onclick="filter=\'\';render()">Усі</button>'+C.map(c=>`<button class="btn" onclick="filter='${c}';render()">${c}</button>`).join('');let list=data.filter(x=>!filter||x.category===filter);rows.innerHTML=list.length?list.map(m=>`<tr><td><b>${m.name}</b></td><td>${m.category}${m.sub?'<br><small>'+m.sub+'</small>':''}</td><td>${info(m)}</td><td>${qtyText(m)}</td><td>${Object.entries(m.dist||{}).filter(x=>x[1]>0).map(x=>x[0]+': '+x[1]).join('<br>')}</td><td><button class="btn" onclick="openDetail(${m.id})">Відкрити</button></td></tr>`).join(''):'<tr><td colspan="6" class="muted">Позицій немає.</td></tr>';trashRows.innerHTML=bin.length?bin.map(x=>`<div class="sub"><b>${x.item.name}</b><br>${x.reason}<br><small>${x.date}</small></div>`).join(''):'<p class="muted">Корзина порожня.</p>';moveRows.innerHTML=mv.length?mv.map(x=>`<div class="sub">${x.date} — ${x.name}: ${x.from} → ${x.to}, ${x.qty}</div>`).join(''):'Поки немає переміщень.'}
-function openDetail(id){selected=data.find(x=>x.id===id);detailTitle.textContent=selected.name;detailInfo.innerHTML=`<p><b>${selected.category}</b><br>${info(selected)}<br>Кількість: ${qtyText(selected)}</p>`;fromRoom.innerHTML=toRoom.innerHTML=R.map(r=>`<option>${r}</option>`).join('');detail.classList.add('show')}
-function moveItem(){let q=+moveQty.value,have=selected.dist[fromRoom.value]||0;if(!q||q>have||fromRoom.value===toRoom.value)return alert('Перевірте кількість та приміщення');selected.dist[fromRoom.value]=have-q;selected.dist[toRoom.value]=(selected.dist[toRoom.value]||0)+q;mv.unshift({date:new Date().toLocaleString('uk-UA'),name:selected.name,from:fromRoom.value,to:toRoom.value,qty:q});persist();render()}
-function deleteItem(){let r=prompt('Причина видалення (обов’язково):');if(r===null)return;if(!r.trim())return alert('Коментар обов’язковий');bin.unshift({item:selected,reason:r.trim(),date:new Date().toLocaleString('uk-UA')});data=data.filter(x=>x.id!==selected.id);persist();detail.classList.remove('show');render()}
-function clearTrash(){if(role!=='admin')return alert('Тільки головний адміністратор');if(confirm('Очистити корзину остаточно?')){bin=[];persist();render()}}
-function persist(){localStorage.setItem('warehouse_checkpoint4',JSON.stringify(data));localStorage.setItem('warehouse_bin4',JSON.stringify(bin));localStorage.setItem('warehouse_moves4',JSON.stringify(mv))}
-changeCat();
-</script></body></html>
+const $=id=>document.getElementById(id), KEY='warehouse_demo_roles_v1';
+const seed={
+ workers:[
+  {id:'w1',name:'Працівник 1',login:'worker1',pass:'worker123',role:'worker'},
+  {id:'w2',name:'Працівник 2',login:'worker2',pass:'worker123',role:'worker'}
+ ],
+ owners:['Власна закупка','ПК-Сервіс','ЕфЕйчГруп'],
+ firms:['Власна закупка','ПК-Сервіс','ЕфЕйчГруп'],
+ stock:[
+  {id:1,name:'Кабель UTP Cat.5',cat:'Кабель',owner:'Власна закупка',firm:'Власна закупка',qty:610,unit:'м',place:'Центральне',critical:305,ever:true,hideCritical:false},
+  {id:2,name:'RJ-45 Cat.5',cat:'Розхідні матеріали',owner:'ПК-Сервіс',firm:'ПК-Сервіс',qty:70,unit:'шт',place:'Центральне',critical:100,ever:true,hideCritical:false},
+  {id:3,name:'Кабель-канал Kopos 60×40, 2 м, білий',cat:'Кабель-канал',owner:'ЕфЕйчГруп',firm:'ЕфЕйчГруп',qty:1,unit:'шт',place:'Центральне',critical:1,ever:true,hideCritical:false},
+  {id:4,name:'Гофротруба 25 мм, чорна',cat:'Гофротруба',owner:'Власна закупка',firm:'Власна закупка',qty:0,unit:'м',place:'Центральне',critical:100,ever:false,hideCritical:false}
+ ],
+ holdings:{
+  w1:[
+   {name:'Перфоратор',type:'Інструмент',owner:'Власна закупка',qty:1,unit:'шт',min:0},
+   {name:'Обжимка',type:'Інструмент',owner:'Власна закупка',qty:1,unit:'шт',min:0},
+   {name:'RJ-45 Cat.5',type:'Матеріал',owner:'ПК-Сервіс',qty:18,unit:'шт',min:20},
+   {name:'Кабель UTP Cat.5',type:'Матеріал',owner:'Власна закупка',qty:120,unit:'м',min:50}
+  ],
+  w2:[
+   {name:'Шуруповерт',type:'Інструмент',owner:'Власна закупка',qty:1,unit:'шт',min:0},
+   {name:'Болгарка',type:'Інструмент',owner:'Власна закупка',qty:1,unit:'шт',min:0},
+   {name:'Стяжки 3,5×200 мм, чорні',type:'Матеріал',owner:'ЕфЕйчГруп',qty:40,unit:'шт',min:100}
+  ]
+ },
+ objects:[
+  {id:'o1',name:'Об’єкт Тест 1',firm:'ПК-Сервіс',desc:'Монтаж мережі та камер. Перевірити трасу, встановити обладнання.',workers:['w1'],status:'В роботі'}
+ ],
+ orders:[],
+ tools:[
+  {name:'Перфоратор',qty:2,where:'Працівник 1 — 1; склад — 1'},
+  {name:'Шуруповерт',qty:2,where:'Працівник 2 — 1; склад — 1'},
+  {name:'Болгарка',qty:1,where:'Працівник 2'},
+  {name:'Обжимка',qty:2,where:'Працівник 1 — 1; склад — 1'}
+ ]
+};
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||seed,current=null,reqLines=[];
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function doLogin(){
+ let l=lg.value.trim(),p=pw.value;
+ if(l==='admin'&&p==='admin123')current={id:'admin',name:'Головний адміністратор',role:'admin'};
+ else if(l==='manager'&&p==='manager123')current={id:'manager',name:'Просунутий користувач',role:'manager'};
+ else {let w=db.workers.find(x=>x.login===l&&x.pass===p);if(w)current=w}
+ if(!current)return err.textContent='Невірний логін або пароль';
+ login.classList.add('hidden');who.textContent=current.name;buildNav();showPage('home','Огляд');render()
+}
+function logout(){current=null;login.classList.remove('hidden');err.textContent=''}
+function buildNav(){
+ const manager=current.role==='admin'||current.role==='manager';
+ let items=manager?[['home','Огляд'],['stock','Склад'],['workers','Працівники'],['orders','Замовлення'],['objects','Об’єкти / роботи'],['tools','Інструмент']]
+ :[['home','Огляд'],['mycar','Моя машина / залишки'],['orders','Мої заявки'],['objects','Мої об’єкти']];
+ nav.innerHTML=items.map((x,i)=>`<button class="${i?'':'active'}" onclick="showPage('${x[0]}','${x[1]}',this)">${x[1]}</button>`).join('')
+}
+function showPage(id,t,b){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');title.textContent=t;
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');render()
+}
+function ownerOptions(sel){return db.owners.map(x=>`<option${x===sel?' selected':''}>${x}</option>`).join('')}
+function render(){
+ const manager=current.role==='admin'||current.role==='manager';
+ sStock.textContent=db.stock.length;sWorkers.textContent=db.workers.length;
+ sOrders.textContent=db.orders.filter(o=>o.status==='Нова'&&(manager||o.workerId===current.id)).length;
+ criticalOwner.innerHTML='<option>Усі</option>'+ownerOptions(criticalOwner.value);
+ renderCritical();renderStock();renderWorkers();renderOrders();renderCar();renderObjects();renderTools()
+}
+function criticalList(){
+ let list=db.stock.filter(x=>x.ever&&x.qty<=x.critical&&!x.hideCritical);
+ if(criticalOwner.value&&criticalOwner.value!=='Усі')list=list.filter(x=>x.owner===criticalOwner.value);return list
+}
+function renderCritical(){
+ if(!current)return;let list=criticalList();sCritical.textContent=list.length;
+ criticalRows.innerHTML=list.length?list.map(x=>`<tr class="critical"><td><input class="critPick" data-id="${x.id}" type="checkbox" checked></td><td><b>${x.name}</b></td><td>${x.owner}</td><td>${x.qty} ${x.unit}</td><td>${x.critical} ${x.unit}</td><td><input class="orderQty" data-id="${x.id}" type="number" min="0" value="${Math.max(x.critical-x.qty,x.critical)}"></td><td><label class="check"><input type="checkbox" onchange="hideCritical(${x.id},this.checked)"> Більше не показувати</label></td></tr>`).join(''):'<tr><td colspan="7" class="muted">Критичних позицій немає.</td></tr>'
+}
+function hideCritical(id,v){let x=db.stock.find(a=>a.id===id);x.hideCritical=v;save();renderCritical()}
+function makePurchase(){
+ let rows=[...document.querySelectorAll('.critPick:checked')].map(c=>{let x=db.stock.find(a=>a.id==c.dataset.id),q=document.querySelector(`.orderQty[data-id="${x.id}"]`).value;return [x.name,x.owner,`${x.qty} ${x.unit}`,`${q} ${x.unit}`]});
+ if(!rows.length)return alert('Виберіть хоча б одну позицію');
+ downloadCSV('лист_закупки.csv',[['Матеріал','Власність','Залишок','Кількість до замовлення'],...rows])
+}
+function renderStock(){stockRows.innerHTML=db.stock.map(x=>`<tr><td><b>${x.name}</b></td><td>${x.cat}</td><td>${x.owner}</td><td>${x.firm}</td><td>${x.qty} ${x.unit}</td><td>${x.place}</td></tr>`).join('')}
+function openAddStock(){stOwner.innerHTML=ownerOptions();stFirm.innerHTML=db.firms.map(x=>`<option>${x}</option>`).join('');stockModal.classList.add('show')}
+function saveStock(){if(!stName.value.trim())return alert('Вкажіть назву');let q=+stQty.value||0;let existing=db.stock.find(x=>x.name===stName.value.trim()&&x.owner===stOwner.value&&x.place===stPlace.value);if(existing){existing.qty+=q;existing.ever=true;existing.hideCritical=false}else db.stock.push({id:Date.now(),name:stName.value.trim(),cat:stCat.value,owner:stOwner.value,firm:stFirm.value,qty:q,unit:stUnit.value,place:stPlace.value,critical:1,ever:q>0,hideCritical:false});save();stockModal.classList.remove('show');render()}
+function renderWorkers(){
+ workerRows.innerHTML=db.workers.map(w=>`<tr><td><b>${w.name}</b></td><td>${w.login}</td><td>${(db.holdings[w.id]||[]).length} позицій</td><td>${db.objects.filter(o=>o.workers.includes(w.id)&&o.status!=='Завершено').length}</td><td><button class="btn" onclick="viewWorker('${w.id}')">Залишки</button></td></tr>`).join('')
+}
+function openWorker(){newWorkerName.value='';newWorkerLogin.value='';workerModal.classList.add('show')}
+function saveWorker(){let n=newWorkerName.value.trim(),l=newWorkerLogin.value.trim(),p=newWorkerPass.value;if(!n||!l||!p)return alert('Заповніть поля');if(db.workers.some(x=>x.login===l))return alert('Такий логін вже існує');let id='w'+Date.now();db.workers.push({id,name:n,login:l,pass:p,role:'worker'});db.holdings[id]=[];save();workerModal.classList.remove('show');render()}
+function viewWorker(id){let w=db.workers.find(x=>x.id===id),h=db.holdings[id]||[];alert(w.name+'\n\n'+(h.length?h.map(x=>`${x.name}: ${x.qty} ${x.unit} (${x.owner})`).join('\n'):'Залишків немає'))}
+function renderCar(){
+ if(!current||current.role!=='worker'){carRows.innerHTML='';return}carTitle.textContent=`${current.name} — машина / залишки`;let h=db.holdings[current.id]||[];
+ carRows.innerHTML=h.length?h.map(x=>`<tr class="${x.type!=='Інструмент'&&x.qty<=x.min?'critical':''}"><td><b>${x.name}</b></td><td>${x.type}</td><td>${x.owner}</td><td>${x.qty} ${x.unit}</td><td>${x.type==='Інструмент'?'—':x.min+' '+x.unit}</td><td>${x.type!=='Інструмент'&&x.qty<=x.min?'<span class="warn">Потрібне поповнення</span>':'<span class="ok">OK</span>'}</td></tr>`).join(''):'<tr><td colspan="6">Залишків немає</td></tr>'
+}
+function openRequest(){reqOwner.innerHTML=ownerOptions();reqObject.innerHTML='<option value="">Без об’єкта</option>'+db.objects.filter(o=>o.workers.includes(current.id)&&o.status!=='Завершено').map(o=>`<option value="${o.id}">${o.name}</option>`).join('');reqLines=[];addReqLine();requestModal.classList.add('show')}
+function addReqLine(){reqLines.push({});drawReqLines()}
+function drawReqLines(){reqItems.innerHTML=reqLines.map((x,i)=>`<div class="grid2 sub"><div><label>Позиція</label><select id="ri${i}">${db.stock.map(s=>`<option>${s.name}</option>`).join('')}</select></div><div><label>Кількість</label><input id="rq${i}" type="number" min="1" value="1"></div></div>`).join('')}
+function saveRequest(){let items=reqLines.map((x,i)=>({name:$('ri'+i).value,qty:+$('rq'+i).value||1}));db.orders.unshift({id:Date.now(),workerId:current.id,worker:current.name,owner:reqOwner.value,objectId:reqObject.value,items,status:'Нова',date:new Date().toLocaleString('uk-UA')});save();requestModal.classList.remove('show');render();alert('Заявку створено')}
+function renderOrders(){
+ let manager=current&&(current.role==='admin'||current.role==='manager'),list=manager?db.orders:db.orders.filter(x=>x.workerId===current.id);orderBadge.textContent=`Нових: ${list.filter(x=>x.status==='Нова').length}`;
+ orderRows.innerHTML=list.length?list.map(o=>`<div class="sub"><div class="toolbar"><div><b>${o.worker}</b> · ${o.owner}<br><small class="muted">${o.date}${o.objectId?' · '+(db.objects.find(x=>x.id===o.objectId)?.name||''):''}</small></div><span class="badge">${o.status}</span></div>
+ <table><thead><tr><th>Позиція</th><th>Запитано</th>${manager?'<th>До видачі</th>':''}</tr></thead><tbody>${o.items.map((it,i)=>`<tr><td>${it.name}</td><td>${it.qty}</td>${manager?`<td><input id="issue_${o.id}_${i}" type="number" min="0" value="${it.issueQty??it.qty}"></td>`:''}</tr>`).join('')}</tbody></table>
+ ${manager?`<div class="actions"><button class="btn" onclick="setOrder(${o.id},'Комплектується')">Комплектується</button><button class="btn" onclick="exportMove(${o.id})">Вивантажити таблицю</button><button class="btn primary" onclick="issueOrder(${o.id})">Підтвердити переміщення</button></div>`:''}</div>`).join(''):'<p class="muted">Заявок поки немає.</p>'
+}
+function setOrder(id,s){let o=db.orders.find(x=>x.id===id);o.status=s;save();render()}
+function issueOrder(id){
+ let o=db.orders.find(x=>x.id===id),h=db.holdings[o.workerId]||(db.holdings[o.workerId]=[]);
+ o.items.forEach((it,i)=>{let q=+$(`issue_${o.id}_${i}`).value||0;it.issueQty=q;let s=db.stock.find(x=>x.name===it.name&&x.owner===o.owner);if(!s||q>s.qty)return;s.qty-=q;let hh=h.find(x=>x.name===it.name&&x.owner===o.owner);if(hh)hh.qty+=q;else h.push({name:it.name,type:'Матеріал',owner:o.owner,qty:q,unit:s.unit,min:0})});
+ o.status='Видана / переміщена';save();render()
+}
+function exportMove(id){let o=db.orders.find(x=>x.id===id),rows=o.items.map((it,i)=>[it.name,it.qty,$(`issue_${o.id}_${i}`)?.value||it.qty,o.owner,o.worker]);downloadCSV('бланк_переміщення.csv',[['Позиція','Запитано','До видачі','Власність','Працівник'],...rows])}
+function openObject(){objFirm.innerHTML=db.firms.map(x=>`<option>${x}</option>`).join('');objWorkers.innerHTML=db.workers.map(w=>`<label class="check"><input type="checkbox" value="${w.id}"> ${w.name}</label>`).join('');objectModal.classList.add('show')}
+function saveObject(){let ws=[...objWorkers.querySelectorAll('input:checked')].map(x=>x.value);if(!objName.value.trim())return alert('Вкажіть назву');db.objects.push({id:'o'+Date.now(),name:objName.value.trim(),firm:objFirm.value,desc:objDesc.value.trim(),workers:ws,status:'В роботі'});save();objectModal.classList.remove('show');render()}
+function renderObjects(){let list=(current&&current.role==='worker')?db.objects.filter(o=>o.workers.includes(current.id)):db.objects;objectRows.innerHTML=list.length?list.map(o=>`<div class="sub"><div class="toolbar"><b>${o.name}</b><span class="badge">${o.status}</span></div><p>${o.desc||'Без опису'}</p><small class="muted">Фірма: ${o.firm} · Працівники: ${o.workers.map(id=>db.workers.find(w=>w.id===id)?.name).filter(Boolean).join(', ')||'—'}</small></div>`).join(''):'<p class="muted">Об’єктів немає.</p>'}
+function renderTools(){toolRows.innerHTML=db.tools.map(x=>`<tr><td><b>${x.name}</b></td><td>${x.qty} шт</td><td>${x.where}</td></tr>`).join('')}
+function downloadCSV(name,rows){let csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
+</script>
+</body></html>
